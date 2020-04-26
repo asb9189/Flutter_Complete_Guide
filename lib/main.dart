@@ -20,22 +20,40 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   int _questionIndex = 0;
+  int _totalScore = 0;
 
   final _questions = [
       
       //These are just maps
-      {"questionText": "What's you're favorite color?", "answers": [
-        "Black", "Red", "Green", "White"]},
+      {"questionText": "What's you're favorite color?", 
+        "answers": [
+          {"text" : "Black", "score" : 10},
+          {"text" : "Red", "score" : 5},
+          {"text" : "Green", "score" : 3},
+          {"text" : "White", "score" : 1}
+      ]},
 
-      {"questionText": "What's you're favorite animal?", "answers": [
-        "Rabbit", "Snake", "Elaphant", "Lion"]},
+      {"questionText": "What's you're favorite animal?", 
+        "answers": [
+          {"text" : "Rabbit", "score" : 3},
+          {"text" : "Snake", "score" : 11},
+          {"text" : "Elaphant", "score" : 5},
+          {"text" : "Lion", "score" : 9}
+      ]},
 
-      {"questionText": "What's you're favorite instructor?", "answers": [
-        "Max", "Max", "Max", "Max"]}
+      {"questionText": "What's you're favorite instructor?", 
+        "answers": [
+        {"text" : "Max", "score" : 1},
+        {"text" : "Max", "score" : 1},
+        {"text" : "Max", "score" : 1},
+        {"text" : "Max", "score" : 1}
+      ]}
+
     ];
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
 
+    _totalScore += score;
     setState(() {
       _questionIndex++;
     });
@@ -48,6 +66,15 @@ class _MyAppState extends State<MyApp> {
 
   }
 
+  void _resetQuiz() {
+
+    setState(() {
+      _totalScore = 0;
+      _questionIndex = 0;
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +84,7 @@ class _MyAppState extends State<MyApp> {
         ), //AppBar
         body: _questionIndex < _questions.length 
         ? Quiz(answerQuestion: _answerQuestion, questions: _questions, questionIndex: _questionIndex,)
-        : Result()), 
+        : Result(_totalScore, _resetQuiz)), 
     ); 
   }
 }
