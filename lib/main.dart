@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import './question.dart';
+import './quiz.dart';
+import './result.dart';
+
 
 void main() {
   //pass main widget to be run
@@ -19,34 +21,43 @@ class _MyAppState extends State<MyApp> {
 
   int _questionIndex = 0;
 
+  final _questions = [
+      
+      //These are just maps
+      {"questionText": "What's you're favorite color?", "answers": [
+        "Black", "Red", "Green", "White"]},
+
+      {"questionText": "What's you're favorite animal?", "answers": [
+        "Rabbit", "Snake", "Elaphant", "Lion"]},
+
+      {"questionText": "What's you're favorite instructor?", "answers": [
+        "Max", "Max", "Max", "Max"]}
+    ];
+
   void _answerQuestion() {
+
     setState(() {
       _questionIndex++;
     });
-    
-    print(_questionIndex);
+
+    if (_questionIndex < _questions.length) {
+      print("We have more questions!");
+    } else {
+      print("No more questions!");
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
-
-    var questions = ["What's your favorite color?", "What's your favorite animal?"];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("My First App!"),
         ), //AppBar
-        body: Column(
-          children: [
-            Question(questions[_questionIndex]),
-            RaisedButton(child: Text("Answer 1"), onPressed: _answerQuestion),
-            RaisedButton(child: Text("Answer 1"), onPressed: () => print("answer 2")),
-            RaisedButton(child: Text("Answer 1"), onPressed: () {
-              print("answer 3");
-            }),
-          ]
-        ), //Column
-      ), //Scaffold
-    ); //MaterailApp
+        body: _questionIndex < _questions.length 
+        ? Quiz(answerQuestion: _answerQuestion, questions: _questions, questionIndex: _questionIndex,)
+        : Result()), 
+    ); 
   }
 }
